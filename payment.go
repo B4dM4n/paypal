@@ -38,7 +38,7 @@ func (c *Client) CreatePayment(p Payment) (*CreatePaymentResp, error) {
 }
 
 // ExecutePayment completes an approved Paypal payment that has been approved by the payer
-func (c *Client) ExecutePayment(paymentID, payerID string, transactions []Transaction) (*ExecutePaymentResp, error) {
+func (c *Client) ExecutePayment(paymentID, payerID string, transactions []Transaction) (*CreatePaymentResp, error) {
 	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/payment/%s/execute", c.APIBase, paymentID), struct {
 		PayerID      string        `json:"payer_id"`
 		Transactions []Transaction `json:"transactions"`
@@ -50,7 +50,7 @@ func (c *Client) ExecutePayment(paymentID, payerID string, transactions []Transa
 		return nil, err
 	}
 
-	v := &ExecutePaymentResp{}
+	v := &CreatePaymentResp{}
 
 	err = c.SendWithAuth(req, v)
 	if err != nil {
